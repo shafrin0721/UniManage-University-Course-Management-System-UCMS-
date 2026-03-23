@@ -1,0 +1,41 @@
+@model UniManage.Models.StudentDashboardViewModel
+@{
+    ViewBag.Title = "Student Dashboard";
+}
+<h2>Student Dashboard</h2>
+
+<div class="panel-soft">
+    <h4>Welcome, @Model.Name</h4>
+    <p>Use the navigation bar to browse courses, submit assignments, and view messages.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>My Enrollments</h3>
+        <table class="table table-bordered">
+            <tr><th>Course ID</th><th>Enrolled At</th><th>Final Grade</th></tr>
+            @foreach (var item in Model.Enrollments)
+            {
+                <tr>
+                    <td>@item.CourseId</td>
+                    <td>@item.EnrolledAt.ToString("yyyy-MM-dd")</td>
+                    <td>@(item.FinalGrade.HasValue ? item.FinalGrade.Value.ToString("0.0") : "Pending")</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Upcoming Assignments</h3>
+        <table class="table table-bordered">
+            <tr><th>Title</th><th>Deadline</th><th>Action</th></tr>
+            @foreach (var item in Model.UpcomingAssignments)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Deadline.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td><a class="btn btn-xs btn-primary" href="@Url.Action("Submit","Assignments", new { id = item.Id })">Submit</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

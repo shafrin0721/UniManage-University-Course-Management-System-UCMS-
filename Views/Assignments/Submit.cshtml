@@ -1,0 +1,25 @@
+@model UniManage.Models.Submission
+@{
+    ViewBag.Title = "Submit Assignment";
+    var assignment = ViewBag.Assignment as UniManage.Models.Assignment;
+}
+<h2>Submit Assignment</h2>
+<div class="panel-soft">
+    <h4>@assignment.Title</h4>
+    <p><strong>Course:</strong> @assignment.Course.Title</p>
+    <p><strong>Deadline:</strong> @assignment.Deadline.ToString("yyyy-MM-dd HH:mm")</p>
+    <p>@assignment.Instructions</p>
+</div>
+<div class="panel-soft" style="max-width:800px;">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.AssignmentId)
+    <div class="form-group">
+        @Html.LabelFor(m => m.SubmissionText)
+        @Html.TextAreaFor(m => m.SubmissionText, new { @class = "form-control", rows = 8 })
+        @Html.ValidationMessageFor(m => m.SubmissionText, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-success">Submit Work</button>
+}
+</div>

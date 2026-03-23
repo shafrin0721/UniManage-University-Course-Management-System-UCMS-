@@ -1,0 +1,36 @@
+@model UniManage.Models.LecturerDashboardViewModel
+@{
+    ViewBag.Title = "Lecturer Dashboard";
+}
+<h2>Lecturer Dashboard</h2>
+<div class="panel-soft">
+    <h4>Welcome, @Model.Name</h4>
+    <p>Create assignments, review submissions, and monitor your teaching workload.</p>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h3>Courses Assigned</h3>
+        <table class="table table-bordered">
+            <tr><th>Code</th><th>Title</th><th>Limit</th></tr>
+            @foreach (var course in Model.Courses)
+            {
+                <tr><td>@course.CourseCode</td><td>@course.Title</td><td>@course.EnrollmentLimit</td></tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Recent Submissions</h3>
+        <table class="table table-bordered">
+            <tr><th>Submission ID</th><th>Student ID</th><th>Submitted</th><th>Action</th></tr>
+            @foreach (var item in Model.RecentSubmissions)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.StudentId</td>
+                    <td>@item.SubmittedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td><a class="btn btn-xs btn-warning" href="@Url.Action("Grade","Assignments", new { id = item.Id })">Grade</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

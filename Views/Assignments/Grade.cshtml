@@ -1,0 +1,27 @@
+@model UniManage.Models.Submission
+@{
+    ViewBag.Title = "Grade Submission";
+}
+<h2>Grade Submission</h2>
+<div class="panel-soft">
+    <p><strong>Assignment:</strong> @Model.Assignment.Title</p>
+    <p><strong>Student:</strong> @Model.Student.FullName</p>
+    <p><strong>Submitted:</strong> @Model.SubmittedAt.ToString("yyyy-MM-dd HH:mm")</p>
+    <p><strong>Submission:</strong></p>
+    <div class="well">@Model.SubmissionText</div>
+</div>
+<div class="panel-soft" style="max-width:700px;">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label>Grade</label>
+        <input type="number" step="0.1" min="0" max="100" class="form-control" name="grade" value="@Model.Grade" />
+    </div>
+    <div class="form-group">
+        <label>Feedback</label>
+        <textarea class="form-control" rows="5" name="feedback">@Model.Feedback</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Grade</button>
+}
+</div>

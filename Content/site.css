@@ -1,0 +1,6 @@
+body { padding-top: 70px; padding-bottom: 30px; }
+.hero { background: #0e3a5d; color: #fff; padding: 32px; border-radius: 10px; margin-bottom: 24px; }
+.panel-soft { background: #f8fbff; border: 1px solid #d9e7f5; border-radius: 8px; padding: 18px; margin-bottom: 16px; }
+.stat-box { padding: 18px; border-radius: 8px; background: #f5f5f5; text-align: center; margin-bottom: 16px; }
+.table th { background: #1f4e79; color: #fff; }
+.footer-note { color: #777; font-size: 12px; margin-top: 20px; }

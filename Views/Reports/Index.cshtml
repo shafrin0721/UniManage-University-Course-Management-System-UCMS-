@@ -1,0 +1,16 @@
+@model UniManage.Models.ReportViewModel
+@{
+    ViewBag.Title = "Reports";
+}
+<h2>@Model.Title</h2>
+<div class="panel-soft">
+    <p><strong>Average recorded grade:</strong> @ViewBag.AverageGrade</p>
+    <p>This page provides a simple server-generated report summary for viva demonstration.</p>
+</div>
+<table class="table table-bordered">
+    <tr><th>Course</th><th>Enrollment Count</th></tr>
+    @for (int i = 0; i < Model.Labels.Count; i++)
+    {
+        <tr><td>@Model.Labels[i]</td><td>@Model.Values[i]</td></tr>
+    }
+</table>

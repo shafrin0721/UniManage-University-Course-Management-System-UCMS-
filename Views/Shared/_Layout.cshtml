@@ -1,0 +1,54 @@
+@{
+    var title = ViewData["Title"] != null ? ViewData["Title"].ToString() : "UniManage";
+    var userId = Session["UserId"];
+    var fullName = Session["FullName"] != null ? Session["FullName"].ToString() : "";
+    var role = Session["Role"] != null ? Session["Role"].ToString() : "";
+    var userDisplay = fullName + " (" + role + ")";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@title - UniManage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">UniManage</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                <li>@Html.ActionLink("Assignments", "Index", "Assignments")</li>
+                <li>@Html.ActionLink("Messages", "Inbox", "Messages")</li>
+                <li>@Html.ActionLink("Reports", "Index", "Reports")</li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (userId == null)
+                {
+                    <li>@Html.ActionLink("Register", "Register", "Account")</li>
+                    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                }
+                else
+                {
+                    <li><a href="#">@userDisplay</a></li>
+                    <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <div class="footer-note">UniManage demo project - ASP.NET MVC 5 with C#</div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

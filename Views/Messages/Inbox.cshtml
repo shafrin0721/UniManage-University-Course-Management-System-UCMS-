@@ -1,0 +1,19 @@
+@model IEnumerable<UniManage.Models.Message>
+@{
+    ViewBag.Title = "Inbox";
+}
+<h2>Inbox</h2>
+<p><a class="btn btn-primary" href="@Url.Action("Compose")">Compose Message</a></p>
+<table class="table table-bordered">
+    <tr><th>From User ID</th><th>Subject</th><th>Body</th><th>Sent At</th><th>Status</th></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FromUserId</td>
+            <td>@item.Subject</td>
+            <td>@item.Body</td>
+            <td>@item.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+            <td>@(item.IsRead ? "Read" : "Unread")</td>
+        </tr>
+    }
+</table>

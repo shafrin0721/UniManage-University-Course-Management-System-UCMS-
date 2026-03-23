@@ -1,0 +1,12 @@
+@model UniManage.Models.Course
+@{
+    ViewBag.Title = "Delete Course";
+}
+<h2>Delete Course</h2>
+<div class="alert alert-warning">Are you sure you want to delete <strong>@Model.Title</strong>?</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-default" href="@Url.Action("Index")">Cancel</a>
+}

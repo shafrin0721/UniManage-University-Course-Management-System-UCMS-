@@ -1,0 +1,14 @@
+@model UniManage.Models.AdminDashboardViewModel
+@{
+    ViewBag.Title = "Administrator Dashboard";
+}
+<h2>Administrator Dashboard</h2>
+<div class="row">
+    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalUsers</h3><p>Total Users</p></div></div>
+    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalCourses</h3><p>Total Courses</p></div></div>
+    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalEnrollments</h3><p>Total Enrollments</p></div></div>
+    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalAssignments</h3><p>Total Assignments</p></div></div>
+</div>
+<div class="panel-soft">
+    <p>Administrators can create and maintain courses, assign lecturers, and review system statistics.</p>
+</div>

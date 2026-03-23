@@ -1,0 +1,32 @@
+@{
+    ViewBag.Title = "Home";
+}
+<div class="hero">
+    <h1>UniManage - University Course Management System</h1>
+    <p>A multi-role ASP.NET MVC web application for students, lecturers, and administrators.</p>
+    <p>
+        <a class="btn btn-default" href="@Url.Action("Register","Account")">Create Account</a>
+        <a class="btn btn-warning" href="@Url.Action("Login","Account")">Login</a>
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel-soft">
+            <h3>Students</h3>
+            <p>Browse courses, enroll, submit assignments, and view grades.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel-soft">
+            <h3>Lecturers</h3>
+            <p>Create assignments, review submissions, record feedback, and generate summaries.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel-soft">
+            <h3>Administrators</h3>
+            <p>Manage courses and monitor system usage, enrollments, and reports.</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+@model IEnumerable<UniManage.Models.Course>
+@{
+    ViewBag.Title = "Courses";
+}
+<h2>Courses</h2>
+@if (Session["Role"] != null && Session["Role"].ToString() == "Administrator")
+{
+    <p><a class="btn btn-primary" href="@Url.Action("Create")">Add New Course</a></p>
+}
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Code</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Limit</th>
+        <th>Lecturer</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CourseCode</td>
+            <td>@item.Title</td>
+            <td>@item.Description</td>
+            <td>@item.EnrollmentLimit</td>
+            <td>@(item.Lecturer != null ? item.Lecturer.FullName : "Not Assigned")</td>
+            <td>
+                @if (Session["Role"] != null && Session["Role"].ToString() == "Administrator")
+                {
+                    <a class="btn btn-xs btn-warning" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
+                }
+            </td>
+        </tr>
+    }
+</table>

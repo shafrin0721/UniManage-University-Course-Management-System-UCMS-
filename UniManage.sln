@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniManage", "UniManage.csproj", "{3E8442A8-8B8D-48E7-A5E7-AC8DF01F3D51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E8442A8-8B8D-48E7-A5E7-AC8DF01F3D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8442A8-8B8D-48E7-A5E7-AC8DF01F3D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C283B76F-7E03-4B6C-9557-103F31AF14C8}
+	EndGlobalSection
+EndGlobal

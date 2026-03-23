@@ -1,0 +1,17 @@
+@model IEnumerable<UniManage.Models.Enrollment>
+@{
+    ViewBag.Title = "My Courses";
+}
+<h2>My Courses</h2>
+<table class="table table-bordered">
+    <tr><th>Course ID</th><th>Student ID</th><th>Enrolled At</th><th>Grade</th></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CourseId</td>
+            <td>@item.StudentId</td>
+            <td>@item.EnrolledAt.ToString("yyyy-MM-dd")</td>
+            <td>@(item.FinalGrade.HasValue ? item.FinalGrade.Value.ToString("0.0") : "Pending")</td>
+        </tr>
+    }
+</table>
