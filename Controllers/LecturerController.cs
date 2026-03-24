@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using UniManage.DAL;
 using UniManage.Filters;
 using UniManage.Models;
+using System.Data.Entity;
 
 namespace UniManage.Controllers
 {
@@ -19,7 +20,12 @@ namespace UniManage.Controllers
             {
                 Name = Session["FullName"].ToString(),
                 Courses = db.Courses.Where(c => c.LecturerId == lecturerId).ToList(),
-                RecentSubmissions = db.Submissions.OrderByDescending(s => s.SubmittedAt).Take(10).ToList()
+                RecentSubmissions = db.Submissions
+                    .Include(s => s.Student)
+                    .Include(s => s.Assignment)
+                    .OrderByDescending(s => s.SubmittedAt)
+                    .Take(10)
+                    .ToList()
             };
 
             return View(vm);
