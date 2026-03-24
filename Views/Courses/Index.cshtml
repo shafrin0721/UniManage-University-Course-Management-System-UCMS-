@@ -1,36 +1,55 @@
 @model IEnumerable<UniManage.Models.Course>
+
 @{
-    ViewBag.Title = "Courses";
+    ViewData["Title"] = "Course Management";
 }
-<h2>Courses</h2>
-@if (Session["Role"] != null && Session["Role"].ToString() == "Administrator")
+
+<h2>Course Management</h2>
+
+@if (TempData["Success"] != null)
 {
-    <p><a class="btn btn-primary" href="@Url.Action("Create")">Add New Course</a></p>
+    <div class="alert alert-success">@TempData["Success"]</div>
 }
+
+<p>
+    @Html.ActionLink("Create New Course", "Create", "Courses", null, new { @class = "btn btn-primary" })
+</p>
+
 <table class="table table-bordered table-striped">
-    <tr>
-        <th>Code</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Limit</th>
-        <th>Lecturer</th>
-        <th>Actions</th>
-    </tr>
-    @foreach (var item in Model)
-    {
+    <thead>
         <tr>
-            <td>@item.CourseCode</td>
-            <td>@item.Title</td>
-            <td>@item.Description</td>
-            <td>@item.EnrollmentLimit</td>
-            <td>@(item.Lecturer != null ? item.Lecturer.FullName : "Not Assigned")</td>
-            <td>
-                @if (Session["Role"] != null && Session["Role"].ToString() == "Administrator")
-                {
-                    <a class="btn btn-xs btn-warning" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
-                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
-                }
-            </td>
+            <th>Course Code</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Enrollment Limit</th>
+            <th>Lecturer ID</th>
+            <th>Actions</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-center">No courses found.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CourseCode</td>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.EnrollmentLimit</td>
+                    <td>@item.LecturerId</td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-xs" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning btn-xs" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-xs" })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
 </table>

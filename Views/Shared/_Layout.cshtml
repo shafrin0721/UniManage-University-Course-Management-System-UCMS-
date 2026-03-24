@@ -22,6 +22,7 @@
                 <a class="navbar-brand" href="@Url.Action("Index", "Home")">UniManage</a>
             </div>
             <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Admin Dashboard", "Dashboard", "Admin")</li>
                 <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
                 <li>@Html.ActionLink("Assignments", "Index", "Assignments")</li>
                 <li>@Html.ActionLink("Messages", "Inbox", "Messages")</li>
@@ -42,9 +43,12 @@
         </div>
     </nav>
 
-    <div class="container body-content">
+    <div class="container body-content" style="margin-top:70px;">
         @RenderBody()
-        <div class="footer-note">UniManage demo project - ASP.NET MVC 5 with C#</div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - UniManage</p>
+        </footer>
     </div>
 
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>

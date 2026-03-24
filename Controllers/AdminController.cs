@@ -4,24 +4,30 @@ using UniManage.DAL;
 using UniManage.Filters;
 using UniManage.Models;
 
+
 namespace UniManage.Controllers
 {
-    [AuthorizeRole("Administrator")]
     public class AdminController : Controller
     {
         private readonly UcmsDbContext db = new UcmsDbContext();
 
         public ActionResult Dashboard()
         {
-            var vm = new AdminDashboardViewModel
-            {
-                TotalUsers = db.AppUsers.Count(),
-                TotalCourses = db.Courses.Count(),
-                TotalEnrollments = db.Enrollments.Count(),
-                TotalAssignments = db.Assignments.Count()
-            };
+            ViewData["Title"] = "Administrator Dashboard";
 
-            return View(vm);
+            ViewBag.TotalUsers = db.AppUsers.Count();
+            ViewBag.TotalLecturers = db.AppUsers.Count(x => x.Role == "Lecturer");
+            ViewBag.TotalStudents = db.AppUsers.Count(x => x.Role == "Student");
+            ViewBag.TotalCourses = db.Courses.Count();
+            ViewBag.TotalAssignments = db.Assignments.Count();
+            ViewBag.TotalEnrollments = db.Enrollments.Count();
+
+            var recentCourses = db.Courses
+                .OrderByDescending(c => c.Id)
+                .Take(5)
+                .ToList();
+
+            return View(recentCourses);
         }
     }
 }

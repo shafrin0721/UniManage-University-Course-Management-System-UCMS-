@@ -1,14 +1,148 @@
-@model UniManage.Models.AdminDashboardViewModel
+@model IEnumerable<UniManage.Models.Course>
+
 @{
-    ViewBag.Title = "Administrator Dashboard";
+    ViewData["Title"] = "Administrator Dashboard";
 }
+
 <h2>Administrator Dashboard</h2>
+
 <div class="row">
-    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalUsers</h3><p>Total Users</p></div></div>
-    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalCourses</h3><p>Total Courses</p></div></div>
-    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalEnrollments</h3><p>Total Enrollments</p></div></div>
-    <div class="col-md-3"><div class="stat-box"><h3>@Model.TotalAssignments</h3><p>Total Assignments</p></div></div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Total Users</div>
+            <div class="panel-body"><h3>@ViewBag.TotalUsers</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">Lecturers</div>
+            <div class="panel-body"><h3>@ViewBag.TotalLecturers</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">Students</div>
+            <div class="panel-body"><h3>@ViewBag.TotalStudents</h3></div>
+        </div>
+    </div>
 </div>
-<div class="panel-soft">
-    <p>Administrators can create and maintain courses, assign lecturers, and review system statistics.</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-warning">
+            <div class="panel-heading">Courses</div>
+            <div class="panel-body"><h3>@ViewBag.TotalCourses</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Assignments</div>
+            <div class="panel-body"><h3>@ViewBag.TotalAssignments</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Enrollments</div>
+            <div class="panel-body"><h3>@ViewBag.TotalEnrollments</h3></div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Recent Courses</div>
+    <div class="panel-body">
+        <p>@Html.ActionLink("Manage Courses", "Index", "Courses", null, new { @class = "btn btn-primary btn-sm" })</p>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p>No courses available.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Title</th>
+                        <th>Enrollment Limit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.CourseCode</td>
+                            <td>@course.Title</td>
+                            <td>@course.EnrollmentLimit</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-warning">
+            <div class="panel-heading">Courses</div>
+            <div class="panel-body">
+                <h3>@ViewBag.TotalCourses</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Assignments</div>
+            <div class="panel-body">
+                <h3>@ViewBag.TotalAssignments</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Enrollments</div>
+            <div class="panel-body">
+                <h3>@ViewBag.TotalEnrollments</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Recent Courses</strong>
+        <span class="pull-right">
+            @Html.ActionLink("Manage Courses", "Index", "Courses", null, new { @class = "btn btn-xs btn-primary" })
+        </span>
+    </div>
+    <div class="panel-body">
+        @if (!Model.Any())
+        {
+            <p>No courses available.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Title</th>
+                        <th>Enrollment Limit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.CourseCode</td>
+                            <td>@course.Title</td>
+                            <td>@course.EnrollmentLimit</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>

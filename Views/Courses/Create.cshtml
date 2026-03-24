@@ -1,24 +1,63 @@
 @model UniManage.Models.Course
+
 @{
-    ViewBag.Title = "Create Course";
+    ViewData["Title"] = "Create Course";
 }
+
 <h2>Create Course</h2>
-<div class="panel-soft" style="max-width:800px;">
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">@Html.LabelFor(m => m.CourseCode) @Html.TextBoxFor(m => m.CourseCode, new { @class = "form-control" })</div>
-    <div class="form-group">@Html.LabelFor(m => m.Title) @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })</div>
-    <div class="form-group">@Html.LabelFor(m => m.Description) @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4 })</div>
-    <div class="row">
-        <div class="col-md-4 form-group">@Html.LabelFor(m => m.EnrollmentLimit) @Html.TextBoxFor(m => m.EnrollmentLimit, new { @class = "form-control", type = "number" })</div>
-        <div class="col-md-4 form-group">@Html.LabelFor(m => m.PrerequisiteCourseCode) @Html.TextBoxFor(m => m.PrerequisiteCourseCode, new { @class = "form-control" })</div>
-        <div class="col-md-4 form-group">
-            <label>Lecturer</label>
-            @Html.DropDownList("LecturerId", null, "-- Select Lecturer --", new { @class = "form-control" })
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CourseCode, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.CourseCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CourseCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4 })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EnrollmentLimit, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.EnrollmentLimit, new { @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(m => m.EnrollmentLimit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LecturerId, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.LecturerId, new { @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(m => m.LecturerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Index", "Courses", null, new { @class = "btn btn-default" })
+            </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Save Course</button>
 }
-</div>
