@@ -2,26 +2,59 @@
 @{
     ViewBag.Title = "Assignments";
 }
+
 <h2>Assignments</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
 @if (Session["Role"] != null && Session["Role"].ToString() == "Lecturer")
 {
-    <p><a class="btn btn-primary" href="@Url.Action("Create")">Create Assignment</a></p>
+    <p><a class="btn btn-primary" href="@Url.Action("Create")">+ Create Assignment</a></p>
 }
-<table class="table table-bordered">
-    <tr><th>Course</th><th>Title</th><th>Instructions</th><th>Deadline</th><th>Action</th></tr>
-    @foreach (var item in Model)
-    {
+
+<table class="table table-bordered table-striped">
+    <thead>
         <tr>
-            <td>@(item.Course != null ? item.Course.Title : item.CourseId.ToString())</td>
-            <td>@item.Title</td>
-            <td>@item.Instructions</td>
-            <td>@item.Deadline.ToString("yyyy-MM-dd HH:mm")</td>
-            <td>
-                @if (Session["Role"] != null && Session["Role"].ToString() == "Student")
-                {
-                    <a class="btn btn-xs btn-success" href="@Url.Action("Submit", new { id = item.Id })">Submit</a>
-                }
-            </td>
+            <th>Course</th>
+            <th>Title</th>
+            <th>Instructions</th>
+            <th>Deadline</th>
+            <th>Actions</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.Course != null ? item.Course.Title : "N/A")</td>
+                <td>@item.Title</td>
+                <td>@item.Instructions</td>
+                <td>
+                    @if (item.Deadline < DateTime.Now)
+                    {
+                        <span class="label label-danger">@item.Deadline.ToString("yyyy-MM-dd HH:mm") (Overdue)</span>
+                    }
+                    else
+                    {
+                        <span class="label label-success">@item.Deadline.ToString("yyyy-MM-dd HH:mm")</span>
+                    }
+                </td>
+                <td>
+                    @if (Session["Role"] != null && Session["Role"].ToString() == "Lecturer")
+                    {
+                        <a class="btn btn-xs btn-info" href="@Url.Action("Submissions", new { id = item.Id })">Submissions</a>
+                        <a class="btn btn-xs btn-warning" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                        <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
+                    }
+                    @if (Session["Role"] != null && Session["Role"].ToString() == "Student")
+                    {
+                        <a class="btn btn-xs btn-success" href="@Url.Action("Submit", new { id = item.Id })">Submit</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

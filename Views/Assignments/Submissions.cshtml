@@ -1,0 +1,52 @@
+@model IEnumerable<UniManage.Models.Submission>
+@{
+    ViewBag.Title = "Submissions";
+    var assignment = ViewBag.Assignment as UniManage.Models.Assignment;
+}
+
+<h2>Submissions for: @assignment.Title</h2>
+<p class="text-muted">Course: @(assignment.Course != null ? assignment.Course.Title : "N/A")</p>
+
+<a href="@Url.Action("Index")" class="btn btn-default" style="margin-bottom:15px;">Back to Assignments</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No submissions yet for this assignment.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Submitted At</th>
+                <th>Grade</th>
+                <th>Feedback</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.Student != null ? item.Student.FullName : "Unknown")</td>
+                    <td>@item.SubmittedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @if (item.Grade.HasValue)
+                        {
+                            <span class="label label-success">@item.Grade.Value.ToString("0.0")</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Pending</span>
+                        }
+                    </td>
+                    <td>@(string.IsNullOrEmpty(item.Feedback) ? "No feedback yet" : item.Feedback)</td>
+                    <td>
+                        <a class="btn btn-xs btn-warning" href="@Url.Action("Grade", new { id = item.Id })">Grade</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
