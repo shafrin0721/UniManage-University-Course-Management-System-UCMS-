@@ -1,0 +1,55 @@
+﻿@model IEnumerable<UniManage.Models.Message>
+@{
+    ViewBag.Title = "Sent Messages";
+}
+
+<h2>📤 Sent Messages</h2>
+
+<div style="margin-bottom:15px;">
+    <a class="btn btn-primary" href="@Url.Action("Compose")">✉ Compose Message</a>
+    <a class="btn btn-default" href="@Url.Action("Inbox")">📥 Back to Inbox</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No sent messages yet.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>To</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Sent At</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @(ViewBag.UserNames != null && ((System.Collections.Generic.Dictionary<int,string>)ViewBag.UserNames).ContainsKey(item.ToUserId)
+                            ? ((System.Collections.Generic.Dictionary<int,string>)ViewBag.UserNames)[item.ToUserId]
+                            : "User #" + item.ToUserId)
+                    </td>
+                    <td>@item.Subject</td>
+                    <td>@item.Body</td>
+                    <td>@item.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @if (item.IsRead)
+                        {
+                            <span class="label label-success">Read by recipient</span>
+                        }
+                        else
+                        {
+                            <span class="label label-default">Not yet read</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
