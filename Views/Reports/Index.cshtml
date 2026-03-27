@@ -1,16 +1,198 @@
-@model UniManage.Models.ReportViewModel
+﻿@model UniManage.Models.ReportViewModel
 @{
-    ViewBag.Title = "Reports";
+    ViewBag.Title = "Reports & Analytics";
 }
-<h2>@Model.Title</h2>
-<div class="panel-soft">
-    <p><strong>Average recorded grade:</strong> @ViewBag.AverageGrade</p>
-    <p>This page provides a simple server-generated report summary for viva demonstration.</p>
+
+<h2>📊 Reports & Analytics</h2>
+<p class="text-muted">Overview of course performance, student grades and lecturer workload.</p>
+
+{{--- Workload Summary Cards ---}}
+<div class="row" style="margin-bottom:20px;">
+    <div class="col-md-3">
+        <div class="panel panel-primary text-center">
+            <div class="panel-heading">My Courses</div>
+            <div class="panel-body"><h3>@Model.Workload.TotalCourses</h3></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-info text-center">
+            <div class="panel-heading">Total Assignments</div>
+            <div class="panel-body"><h3>@Model.Workload.TotalAssignments</h3></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-warning text-center">
+            <div class="panel-heading">Total Submissions</div>
+            <div class="panel-body"><h3>@Model.Workload.TotalSubmissions</h3></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-danger text-center">
+            <div class="panel-heading">Pending Grading</div>
+            <div class="panel-body"><h3>@Model.Workload.PendingGrading</h3></div>
+        </div>
+    </div>
 </div>
-<table class="table table-bordered">
-    <tr><th>Course</th><th>Enrollment Count</th></tr>
-    @for (int i = 0; i < Model.Labels.Count; i++)
-    {
-        <tr><td>@Model.Labels[i]</td><td>@Model.Values[i]</td></tr>
-    }
-</table>
+
+<div class="row">
+    {{--- Grade Distribution Chart ---}}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Grade Distribution</strong></div>
+            <div class="panel-body">
+                <canvas id="gradeChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{--- Course Enrollment Chart ---}}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Course Enrollment</strong></div>
+            <div class="panel-body">
+                <canvas id="enrollmentChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{--- Student Performance Table ---}}
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Student Performance</strong></div>
+    <div class="panel-body">
+        @if (!Model.StudentPerformance.Any())
+        {
+            <p class="text-muted">No graded submissions yet.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Total Submissions</th>
+                        <th>Average Grade</th>
+                        <th>Performance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.StudentPerformance.OrderByDescending(s => s.AverageGrade))
+                    {
+                        <tr>
+                            <td>@item.StudentName</td>
+                            <td>@item.TotalSubmissions</td>
+                            <td>@item.AverageGrade.ToString("0.0")</td>
+                            <td>
+                                @if (item.AverageGrade >= 80)
+                                {
+                                    <span class="label label-success">Excellent</span>
+                                }
+                                else if (item.AverageGrade >= 70)
+                                {
+                                    <span class="label label-info">Good</span>
+                                }
+                                else if (item.AverageGrade >= 50)
+                                {
+                                    <span class="label label-warning">Average</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-danger">Needs Improvement</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+{{--- Course Enrollment Table ---}}
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Course Enrollment Details</strong></div>
+    <div class="panel-body">
+        @if (!Model.CourseEnrollments.Any())
+        {
+            <p class="text-muted">No courses assigned yet.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Enrolled</th>
+                        <th>Limit</th>
+                        <th>Availability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CourseEnrollments)
+                    {
+                        <tr>
+                            <td>@item.CourseTitle</td>
+                            <td>@item.EnrolledCount</td>
+                            <td>@item.EnrollmentLimit</td>
+                            <td>
+                                @{
+                                    int remaining = item.EnrollmentLimit - item.EnrolledCount;
+                                }
+                                @if (remaining <= 0)
+                                {
+                                    <span class="label label-danger">Full</span>
+                                }
+                                else if (remaining <= 5)
+                                {
+                                    <span class="label label-warning">@remaining spots left</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-success">@remaining spots left</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+{{--- Chart.js Script ---}}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Grade Distribution Chart
+    var gradeCtx = document.getElementById('gradeChart').getContext('2d');
+    new Chart(gradeCtx, {
+        type: 'bar',
+        data: {
+            labels: [@Html.Raw(string.Join(",", Model.GradeDistribution.Keys.Select(k => "'" + k + "'")))],
+            datasets: [{
+                label: 'Number of Students',
+                data: [@string.Join(",", Model.GradeDistribution.Values)],
+                backgroundColor: ['#5cb85c','#5bc0de','#f0ad4e','#d9534f','#777']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+
+    // Enrollment Chart
+    var enrollCtx = document.getElementById('enrollmentChart').getContext('2d');
+    new Chart(enrollCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [@Html.Raw(string.Join(",", Model.CourseEnrollments.Select(c => "'" + c.CourseTitle + "'")))],
+            datasets: [{
+                data: [@string.Join(",", Model.CourseEnrollments.Select(c => c.EnrolledCount))],
+                backgroundColor: ['#337ab7','#5cb85c','#f0ad4e','#d9534f','#9b59b6']
+            }]
+        },
+        options: { responsive: true }
+    });
+    </script>
+}

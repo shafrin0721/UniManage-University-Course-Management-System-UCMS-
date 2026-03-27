@@ -25,10 +25,4 @@ namespace UniManage.Models
         public int TotalAssignments { get; set; }
     }
 
-    public class ReportViewModel
-    {
-        public string Title { get; set; }
-        public List<string> Labels { get; set; }
-        public List<int> Values { get; set; }
-    }
 }

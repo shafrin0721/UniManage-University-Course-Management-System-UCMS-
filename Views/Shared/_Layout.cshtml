@@ -51,7 +51,20 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <!-- Load jQuery: prefer updated files; fallback to existing names if not present -->
+    <script>
+        (function(){
+            var script = document.createElement('script');
+            script.src = '/Scripts/jquery-3.6.0.min.js';
+            script.onload = function(){};
+            script.onerror = function(){
+                var fallback = document.createElement('script');
+                fallback.src = '/Scripts/jquery-3.4.1.min.js';
+                document.head.appendChild(fallback);
+            };
+            document.head.appendChild(script);
+        })();
+    </script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
